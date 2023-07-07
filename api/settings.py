@@ -12,7 +12,7 @@ dotenv_file = BASE_DIR / ".env.local"
 if path.isfile(dotenv_file):
     dotenv.load_dotenv(dotenv_file)
 
-DEVELOMENT_MODE = getenv('DEVELOPMENT_MODE', 'False') == 'True'
+DEVELOPMENT_MODE = getenv('DEVELOPMENT_MODE', 'False') == 'True'
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
@@ -103,6 +103,9 @@ AWS_SES_REGION_NAME = getenv('AWS_SES_REGION_NAME')
 AWS_SES_REGION_ENDPOINT = f'email.{AWS_SES_REGION_NAME}.amazonaws.com'
 AWS_SES_FROM_EMAIL = getenv('AWS_SES_FROM_EMAIL')
 USE_SES_V2 = True
+
+DOMAIN = getenv('DOMAIN')
+SITE_NAME = 'Importlio'
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
@@ -136,28 +139,29 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
-
-if DEVELOMENT_MODE is True:
+if DEVELOPMENT_MODE is True:
     STATIC_URL = 'static/'
-    STATIC_ROOT = BASE_DIR / 'static'   
+    STATIC_ROOT = BASE_DIR / 'static'
     MEDIA_URL = 'media/'
     MEDIA_ROOT = BASE_DIR / 'media'
 else:
-    STORAGES = {
-        'default': {'BACKEND': 'storages.backends.s3boto3.S3Boto3Storage'},
-    }
     AWS_S3_ACCESS_KEY_ID = getenv('AWS_S3_ACCESS_KEY_ID')
     AWS_S3_SECRET_ACCESS_KEY = getenv('AWS_S3_SECRET_ACCESS_KEY')
-    AWS_STORAGE_BUCKET_NAME=getenv('AWS_S3_STORAGE_BUCKET_NAME')
+    AWS_STORAGE_BUCKET_NAME = getenv('AWS_STORAGE_BUCKET_NAME')
     AWS_S3_REGION_NAME = getenv('AWS_S3_REGION_NAME')
-    AWS_S3_ENDPOINT_URL = f'email.{AWS_S3_REGION_NAME}.amazonaws.com'
+    AWS_S3_ENDPOINT_URL = f'https://{AWS_S3_REGION_NAME}.digitaloceanspaces.com'
     AWS_S3_OBJECT_PARAMETERS = {
-        'CacheControl': 'max-age=86400',
+        'CacheControl': 'max-age=86400'
     }
     AWS_DEFAULT_ACL = 'public-read'
     AWS_LOCATION = 'static'
+    AWS_MEDIA_LOCATION = 'media'
     AWS_S3_CUSTOM_DOMAIN = getenv('AWS_S3_CUSTOM_DOMAIN')
-    
+    STORAGES = {
+        'default': {'BACKEND': 'custom_storages.CustomS3Boto3Storage'},
+        'staticfiles': {'BACKEND': 'storages.backends.s3boto3.S3StaticStorage'}
+    }
+   
 AUTHENTICATION_BACKENDS = [
     'social_core.backends.google.GoogleOAuth2',
     'social_core.backends.facebook.FacebookOAuth2',
