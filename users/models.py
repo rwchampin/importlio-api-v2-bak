@@ -37,6 +37,25 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(max_length=30)
     last_name = models.CharField(max_length=30)
     email = models.EmailField(unique=True, max_length=255)
+    verified_email = models.BooleanField(default=False)
+    avatar = models.ImageField(upload_to='avatars/', blank=True, null=True)
+    
+    affiliate_id = models.CharField(max_length=30, blank=True, null=True)
+    store_id = models.CharField(max_length=30, blank=True, null=True)
+    store_name = models.CharField(max_length=30, blank=True, null=True)
+    
+    address= models.CharField(max_length=255, blank=True, null=True)
+    city = models.CharField(max_length=30, blank=True, null=True)
+    state = models.CharField(max_length=30, blank=True, null=True)
+    zip = models.CharField(max_length=30, blank=True, null=True)
+    region = models.CharField(max_length=30, blank=True, null=True)
+    country = models.CharField(max_length=30, blank=True, null=True)
+    time_zone = models.CharField(max_length=30, blank=True, null=True)
+    
+    current_browser = models.CharField(max_length=30, blank=True, null=True)
+    current_device = models.CharField(max_length=30, blank=True, null=True)
+    
+    last_login = models.DateTimeField(auto_now=True, blank=True, null=True)
     
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
@@ -49,3 +68,4 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     
     def __str__(self):
         return self.email
+

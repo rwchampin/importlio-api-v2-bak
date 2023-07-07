@@ -39,6 +39,9 @@ INSTALLED_APPS = [
     'corsheaders',
     'social_django',
     'storages',
+    'products',
+    'proxies',
+    # 'user_agents',
 ]
 
 MIDDLEWARE = [
