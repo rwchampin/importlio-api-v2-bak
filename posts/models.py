@@ -49,7 +49,6 @@ class Post(models.Model):
     published_at = models.DateTimeField(auto_now_add=True)
     categories = models.ManyToManyField(Category)
     tags = models.ManyToManyField(Tag)
-    custom_fields = GenericRelation('CustomFieldValue')
     minute_read = models.IntegerField(default=0)
     likes = models.ManyToManyField(User, related_name='liked_posts', blank=True)
     dislikes = models.ManyToManyField(User, related_name='disliked_posts', blank=True)
