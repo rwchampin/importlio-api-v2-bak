@@ -146,6 +146,18 @@ else:
     STORAGES = {
         'default': {'BACKEND': 'storages.backends.s3boto3.S3Boto3Storage'},
     }
+    AWS_S3_ACCESS_KEY_ID = getenv('AWS_S3_ACCESS_KEY_ID')
+    AWS_S3_SECRET_ACCESS_KEY = getenv('AWS_S3_SECRET_ACCESS_KEY')
+    AWS_STORAGE_BUCKET_NAME=getenv('AWS_S3_STORAGE_BUCKET_NAME')
+    AWS_S3_REGION_NAME = getenv('AWS_S3_REGION_NAME')
+    AWS_S3_ENDPOINT_URL = f'email.{AWS_S3_REGION_NAME}.amazonaws.com'
+    AWS_S3_OBJECT_PARAMETERS = {
+        'CacheControl': 'max-age=86400',
+    }
+    AWS_DEFAULT_ACL = 'public-read'
+    AWS_LOCATION = 'static'
+    AWS_S3_CUSTOM_DOMAIN = getenv('AWS_S3_CUSTOM_DOMAIN')
+    
 AUTHENTICATION_BACKENDS = [
     'social_core.backends.google.GoogleOAuth2',
     'social_core.backends.facebook.FacebookOAuth2',
@@ -197,8 +209,11 @@ SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
 }
 
 
-CORS_ALLOWED_ORIGINS = getenv('CORS_ALLOWED_ORIGINS', 'http://localhost:3000,http://127.0.0.1:3000').split(',')
-CORS_ALLOWED_CREDENTIALS = True
+CORS_ALLOWED_ORIGINS = getenv(
+    'CORS_ALLOWED_ORIGINS', 
+    'http://localhost:3000,http://127.0.0.1:3000'
+).split(',')
+CORS_ALLOW_CREDENTIALS = True
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
